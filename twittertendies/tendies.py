@@ -3,7 +3,7 @@
 import time
 import requests
 import os
-import json
+import ujson as json
 import re
 import telegram
 import markdown_strings
@@ -109,7 +109,7 @@ class Updater:
 
     def do_message(self, json_message):
         body = markdown_strings.esc_format(json_message["data"]["text"])
-        tickers = re.findall(self.ticker_pattern, body)
+        tickers = set(map(lambda s: s.upper(), re.findall(self.ticker_pattern, body)))
         if len(tickers) == 0:
             return
         tickers_string = " ".join(tickers).upper()
