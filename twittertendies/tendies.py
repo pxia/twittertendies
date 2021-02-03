@@ -156,7 +156,10 @@ class Updater:
         set = self.set_rules(headers, bearer_token)
         while True:
             print("reconnecting")
-            self.get_stream(headers, set, bearer_token)
+            try:
+                self.get_stream(headers, set, bearer_token)
+            except Exception as err:
+                print(err)
             time.sleep(10)
 
 
