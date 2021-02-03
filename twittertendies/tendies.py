@@ -140,9 +140,7 @@ class Updater:
 
 
 def main():
-    updater = Updater(
-        telegram.Bot(token=secrets.BOT_TOKEN)
-    )
+    updater = Updater(telegram.Bot(token=secrets.BOT_TOKEN))
     updater.start_loop()
 
 
