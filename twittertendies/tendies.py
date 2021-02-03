@@ -10,12 +10,22 @@ import secrets
 import html
 
 FOLLOWS = [
-    "PJ_Matlock",
-    "garyblack00",
-    "CitronResearch",
+    "alexcutler247",
     "anandchokkavelu",
-    "OphirGottlieb",
     "Beth_Kindig",
+    "ChrisRandone",
+    "CitronResearch",
+    "garyblack00",
+    "Mitch___Picks",
+    "MrZackMorris",
+    "OphirGottlieb",
+    "PJ_Matlock",
+    "RadioSilentplay",
+    "StockLizardKing",
+    "The_RockTrading",
+    "TheStockGuyTV",
+    "Ultra_Calls",
+    "yatesinvesting",
 ]
 
 
@@ -66,7 +76,6 @@ class Updater:
         sample_rules = list(
             map(lambda user: {"value": "from:" + user, "tag": user}, FOLLOWS)
         )
-        sample_rules.append({"value": "from:peterxia_com", "tag": "peterxia_com"})
         payload = {"add": sample_rules}
         response = requests.post(
             "https://api.twitter.com/2/tweets/search/stream/rules",
