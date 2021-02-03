@@ -6,8 +6,8 @@ import os
 import ujson as json
 import re
 import telegram
-import markdown_strings
 import secrets
+import html
 
 FOLLOWS = [
     "PJ_Matlock",
@@ -108,17 +108,38 @@ class Updater:
                 self.do_message(json_response)
 
     def do_message(self, json_message):
-        body = markdown_strings.esc_format(json_message["data"]["text"])
+        body = html.unescape(json_message["data"]["text"])
+        tweet_id = json_message["data"]["id"]
         tickers = set(map(lambda s: s.upper(), re.findall(self.ticker_pattern, body)))
         if len(tickers) == 0:
             return
-        tickers_string = " ".join(tickers).upper()
-        author = json_message["matching_rules"][0]["tag"]
 
+        # link to yahoo finance
+        tickers_string = " ".join(
+            map(
+                lambda s: "[%s](https://finance.yahoo.com/quote/%s)"
+                % (s.upper(), s[1:].lower()),
+                tickers,
+            )
+        )
+        author = telegram.utils.helpers.escape_markdown(
+            text=json_message["matching_rules"][0]["tag"], version=2
+        )
+
+        # probably fine do this then html escape and markdown escape?
+        # link to twitter search
+        processed_body = re.sub(
+            self.ticker_pattern,
+            lambda m: "[%s](https://twitter.com/search?q=%s&src=cashtag_click)"
+            % (m.group(0), html.escape(m.group(0))),
+            telegram.utils.helpers.escape_markdown(text=body, version=2),
+        )
+
+        text = f"*[@{author}](https://twitter.com/{author}/status/{tweet_id}) on {tickers_string}*\n\n{processed_body}"
         self.telegram_bot.send_message(
             chat_id=secrets.CHAT_ID,
-            text=f"*@{author} on {tickers_string}*\n\n{body}",
-            parse_mode="Markdown",
+            text=text,
+            parse_mode="MarkdownV2",
             disable_web_page_preview=True,
         )
 
