@@ -13,7 +13,6 @@ FOLLOWS = [
     "alexcutler247",
     "anandchokkavelu",
     "Beth_Kindig",
-    "chamath",
     "ChrisRandone",
     "CitronResearch",
     "DeItaone",
@@ -28,6 +27,7 @@ FOLLOWS = [
     "TheStockGuyTV",
     "Ultra_Calls",
     "yatesinvesting",
+    "optionwaves",
 ]
 
 
@@ -39,7 +39,7 @@ def create_headers(bearer_token):
 class Updater:
     def __init__(self, telegram_bot):
         self.telegram_bot = telegram_bot
-        self.ticker_pattern = re.compile("\$[A-Za-z]{2,6}")
+        self.ticker_pattern = re.compile("\$[A-Za-z]{1,6}")
 
     def get_rules(self, headers, bearer_token):
         response = requests.get(
