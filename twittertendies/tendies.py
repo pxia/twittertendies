@@ -27,7 +27,6 @@ FOLLOWS = [
     "TheStockGuyTV",
     "Ultra_Calls",
     "yatesinvesting",
-    "optionwaves",
 ]
 
 
